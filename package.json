@@ -38,6 +38,8 @@
   "files": [
     "dist",
     "README.md",
+    "CONFIG.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {
