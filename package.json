@@ -1,0 +1,97 @@
+{
+  "name": "whiteout",
+  "version": "0.2.0",
+  "description": "Canvas 2D snowfall for React, Next.js and plain HTML. Ten styles, zero dependencies, one animation loop.",
+  "license": "MIT",
+  "type": "module",
+  "author": "1dev-hridoy",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1dev-hridoy/whiteout.git"
+  },
+  "homepage": "https://github.com/1dev-hridoy/whiteout#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.cjs"
+    },
+    "./vanilla": {
+      "types": "./dist/vanilla.d.ts",
+      "import": "./dist/vanilla.js",
+      "require": "./dist/vanilla.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "postbuild": "node scripts/ensure-use-client.mjs",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "test": "node scripts/smoke.mjs",
+    "verify": "npm run typecheck && npm run build && npm run test",
+    "prepublishOnly": "npm run verify",
+    "demo": "node demo/serve.mjs"
+  },
+  "keywords": [
+    "snow",
+    "snowfall",
+    "particles",
+    "canvas",
+    "react",
+    "nextjs",
+    "effect",
+    "animation",
+    "winter",
+    "christmas",
+    "blizzard",
+    "sparkle",
+    "confetti",
+    "aurora",
+    "hail",
+    "parallax",
+    "interactive",
+    "zero-dependencies"
+  ],
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3"
+  },
+  "bugs": {
+    "url": "https://github.com/1dev-hridoy/whiteout/issues"
+  }
+}

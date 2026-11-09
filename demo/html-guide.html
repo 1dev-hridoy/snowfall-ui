@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>whiteout — HTML usage guide</title>
+<style>
+  :root {
+    --bg: #0a0d16;
+    --panel: #11151f;
+    --ink: #e8ecf4;
+    --soft: #9aa4b8;
+    --faint: #6b7488;
+    --rule: #232a38;
+    --accent: #7fc8ff;
+    --code-bg: #0d1119;
+    --serif: "Iowan Old Style", Palatino, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 56px 24px 96px; }
+
+  header { border-bottom: 1px solid var(--rule); padding-bottom: 26px; margin-bottom: 40px; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .2em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 10px;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 5vw, 48px);
+    line-height: 1.05; letter-spacing: -.02em; margin: 0;
+  }
+  .dek { color: var(--soft); font-size: 16px; margin: 14px 0 0; max-width: 56ch; }
+
+  h2 {
+    font-family: var(--serif); font-weight: 400; font-size: 25px;
+    letter-spacing: -.01em; margin: 52px 0 6px;
+    padding-top: 20px; border-top: 1px solid var(--rule);
+  }
+  h2:first-of-type { border-top: 0; padding-top: 0; }
+  h3 {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--faint);
+    margin: 30px 0 8px; font-weight: 600;
+  }
+  p { margin: 10px 0; color: var(--soft); }
+  p strong { color: var(--ink); font-weight: 600; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(127,200,255,.3); }
+  a:hover { border-color: var(--accent); }
+  code {
+    font-family: var(--mono); font-size: .88em;
+    background: rgba(127,200,255,.09); color: #b8dcff;
+    padding: 1.5px 5px; border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--rule);
+    border-radius: 4px; padding: 15px 17px; overflow-x: auto;
+    margin: 14px 0; font-size: 12.5px; line-height: 1.7;
+  }
+  pre code { background: none; padding: 0; color: #cfd8e8; font-size: inherit; }
+  pre .c { color: #5d6a80; }
+  pre .k { color: #c792ea; }
+  pre .s { color: #a5e8a5; }
+
+  .note {
+    border-left: 2px solid var(--accent);
+    background: rgba(127,200,255,.05);
+    padding: 11px 16px; margin: 18px 0; border-radius: 0 3px 3px 0;
+  }
+  .note p { margin: 0; color: var(--soft); font-size: 14px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13.5px; }
+  th {
+    text-align: left; font-family: var(--mono); font-size: 10px;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
+    border-bottom: 1px solid var(--rule); padding: 0 10px 8px 0; font-weight: 600;
+  }
+  td { padding: 9px 10px 9px 0; border-bottom: 1px solid rgba(35,42,56,.6); color: var(--soft); vertical-align: top; }
+  td:first-child { color: var(--ink); font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+
+  .live {
+    position: relative; height: 220px; border-radius: 4px; overflow: hidden;
+    border: 1px solid var(--rule); margin: 20px 0 8px;
+    background: radial-gradient(700px 300px at 70% -10%, #1b2a4a 0%, transparent 60%),
+                linear-gradient(180deg, #060912, #0d1730);
+  }
+  .live-label {
+    position: absolute; left: 14px; bottom: 11px; z-index: 2;
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: rgba(255,255,255,.5); pointer-events: none;
+  }
+  .demo-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 0; }
+  .demo-row button {
+    font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em;
+    text-transform: uppercase; padding: 7px 12px; cursor: pointer;
+    background: transparent; color: var(--soft);
+    border: 1px solid var(--rule); border-radius: 3px;
+    transition: background .14s, color .14s, border-color .14s;
+  }
+  .demo-row button:hover { background: var(--panel); color: var(--ink); }
+  .demo-row button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #06101c; }
+
+  footer {
+    margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--rule);
+    font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">whiteout · html guide</p>
+    <h1>Snow in a plain HTML file.</h1>
+    <p class="dek">
+      No build step, no bundler, no framework. One script tag and a div.
+      This page is the whole guide, and the panel below is running the real
+      engine.
+    </p>
+  </header>
+
+  <h2>1. The shortest version</h2>
+
+  <p>Save this as <code>index.html</code> and open it in a browser. That's it.</p>
+
+<pre><code><span class="k">&lt;!DOCTYPE html&gt;</span>
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    body { margin: 0; }
+    #scene { position: relative; height: 100vh; background: #0a1024; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;div id="scene"&gt;&lt;/div&gt;
+
+  &lt;script type="module"&gt;
+    import { createSnowfall, PRESETS } from 'https://esm.sh/whiteout';
+
+    createSnowfall('#scene', PRESETS.classic);
+  &lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+  <div class="note">
+    <p>
+      <strong>Why the <code>type="module"</code>?</strong> It lets the browser
+      use <code>import</code>. Without it, the import line is a syntax error.
+    </p>
+  </div>
+
+  <div class="note">
+    <p>
+      <strong>Opening from a file works here.</strong> A CDN import is an
+      absolute URL, so <code>file://</code> is fine. If you switch to a local
+      copy of the package, you'll need a server — browsers block relative module
+      imports over <code>file://</code>.
+    </p>
+  </div>
+
+  <h2>2. Try it right here</h2>
+
+  <p>
+    This is the actual engine, not a video. Move your pointer over it, and use
+    the buttons to swap styles.
+  </p>
+
+  <div class="live" id="live">
+    <span class="live-label" id="live-label">classic</span>
+  </div>
+
+  <div class="demo-row" id="demo-buttons"></div>
+
+  <h2>3. Where the snow goes</h2>
+
+  <p>
+    <code>createSnowfall</code> appends a canvas <em>inside</em> the element you
+    give it, and makes that element a positioning context. So the snow fills
+    whatever box you point it at.
+  </p>
+
+  <p>
+    The target needs a height. A <code>div</code> with no content is zero pixels
+    tall, and zero pixels of snow looks exactly like no snow.
+  </p>
+
+<pre><code><span class="c">/* fills the viewport */</span>
+#scene { position: relative; height: 100vh; }
+
+<span class="c">/* or just a hero section */</span>
+.hero  { position: relative; height: 480px; }</code></pre>
+
+  <h3>Behind your content</h3>
+
+  <p>
+    The canvas is absolutely positioned with <code>pointer-events: none</code>,
+    so it won't block clicks. Put your text in a positioned sibling with a
+    higher <code>z-index</code>:
+  </p>
+
+<pre><code>&lt;div id="scene"&gt;
+  &lt;h1 style="position: relative; z-index: 1; color: #fff"&gt;
+    Happy winter
+  &lt;/h1&gt;
+&lt;/div&gt;</code></pre>
+
+  <h2>4. Picking a style</h2>
+
+  <p>Ten presets. Spread one and override whatever you like:</p>
+
+<pre><code>import { createSnowfall, PRESETS } from 'https://esm.sh/whiteout';
+
+createSnowfall('#scene', {
+  ...PRESETS.blizzard,
+  wind: 220,      <span class="c">// harder sideways push</span>
+  count: 600,     <span class="c">// more flakes</span>
+  color: '#dbe9ff',
+});</code></pre>
+
+  <table>
+    <thead><tr><th>Preset</th><th>Look</th></tr></thead>
+    <tbody>
+      <tr><td>classic</td><td>Soft round dots, gentle sway</td></tr>
+      <tr><td>realistic</td><td>Six-point snowflakes that rotate</td></tr>
+      <tr><td>blizzard</td><td>Dense, fast, wind-driven streaks</td></tr>
+      <tr><td>sparkle</td><td>Tiny flickering glitter</td></tr>
+      <tr><td>glow</td><td>Soft blurred orbs with bloom</td></tr>
+      <tr><td>dust</td><td>Barely-there ambient motes</td></tr>
+      <tr><td>hail</td><td>Hard ice pellets, fast</td></tr>
+      <tr><td>aurora</td><td>Slow teal and violet streaks</td></tr>
+      <tr><td>confetti</td><td>Multicolor chips</td></tr>
+      <tr><td>custom</td><td>Your own image or emoji</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Making it react to the mouse</h2>
+
+<pre><code>createSnowfall('#scene', {
+  ...PRESETS.classic,
+  interactive: true,
+  mouseMode: 'trail',   <span class="c">// 'repel' | 'attract' | 'trail'</span>
+  mouseRadius: 140,
+  mouseForce: 1.2,
+});</code></pre>
+
+  <p>
+    <strong>trail</strong> is the nicest for a hero: flakes get dragged along in
+    the pointer's wake. <strong>repel</strong> pushes them away like a plough.
+    <strong>attract</strong> pulls them into a slow vortex.
+  </p>
+
+  <h2>6. Changing it later</h2>
+
+  <p><code>createSnowfall</code> returns a controller. Keep the reference.</p>
+
+<pre><code>const snow = createSnowfall('#scene', PRESETS.classic);
+
+<span class="c">// retune live — no remount, no flicker</span>
+snow.update({ count: 400, wind: 100 });
+
+<span class="c">// pause when the tab is hidden, resume when it's back</span>
+document.addEventListener('visibilitychange', () =&gt; {
+  document.hidden ? snow.pause() : snow.resume();
+});
+
+<span class="c">// clean up if you're removing the element</span>
+<span class="c">// snow.destroy();</span></code></pre>
+
+  <h2>7. Wiring it to your own buttons</h2>
+
+  <p>A small, complete example — a toggle and a density slider:</p>
+
+<pre><code>&lt;div id="scene"&gt;&lt;/div&gt;
+&lt;button id="toggle"&gt;Pause&lt;/button&gt;
+&lt;input id="density" type="range" min="0" max="800" value="150"&gt;
+
+&lt;script type="module"&gt;
+  import { createSnowfall, PRESETS } from 'https://esm.sh/whiteout';
+
+  const snow = createSnowfall('#scene', PRESETS.classic);
+  let paused = false;
+
+  document.getElementById('toggle').onclick = () =&gt; {
+    paused = !paused;
+    paused ? snow.pause() : snow.resume();
+  };
+
+  document.getElementById('density').oninput = (e) =&gt; {
+    snow.setCount(Number(e.target.value));
+  };
+&lt;/script&gt;</code></pre>
+
+  <h2>8. Custom flakes</h2>
+
+  <p>Any image URL or data URI. For emoji, there's a helper:</p>
+
+<pre><code>import { createSnowfall, PRESETS, emojiFlake } from 'https://esm.sh/whiteout';
+
+createSnowfall('#scene', {
+  ...PRESETS.custom,
+  customImage: emojiFlake('🍁'),
+});</code></pre>
+
+  <p>Or write the SVG yourself if you'd rather not import the helper:</p>
+
+<pre><code>const leaf = 'data:image/svg+xml,' + encodeURIComponent(
+  '&lt;svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"&gt;' +
+  '&lt;text y="26" font-size="26"&gt;🍁&lt;/text&gt;&lt;/svg&gt;'
+);</code></pre>
+
+  <h2>9. If it's slow</h2>
+
+  <p>In order of how much it helps:</p>
+
+  <table>
+    <thead><tr><th>Change</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td>count: 150</td><td>Fewer flakes. Biggest single lever.</td></tr>
+      <tr><td>fps: 30</td><td>Half the frames. Barely visible on falling snow.</td></tr>
+      <tr><td>pixelRatio: 1</td><td>Skip the retina buffer. Noticeable on phones.</td></tr>
+      <tr><td>parallax: false</td><td>Removes the per-flake depth math.</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    It already pauses when scrolled off screen and when the tab is hidden, so
+    the usual battery complaints shouldn't apply.
+  </p>
+
+  <h2>10. Accessibility</h2>
+
+  <p>
+    The canvas carries <code>aria-hidden="true"</code>, so screen readers skip
+    it. And if the visitor has reduced motion turned on, you get a single static
+    frame instead of animation — on by default.
+  </p>
+
+  <p>If you have a reason to animate anyway:</p>
+
+<pre><code>createSnowfall('#scene', { ...PRESETS.classic, respectReducedMotion: false });</code></pre>
+
+  <h2>11. With npm instead of a CDN</h2>
+
+  <p>
+    Same code, just a different import. You'll need a bundler or a dev server,
+    because browsers won't resolve bare package names on their own.
+  </p>
+
+<pre><code>npm i whiteout
+
+<span class="c">// then, in your bundled file</span>
+import { createSnowfall, PRESETS } from 'whiteout';</code></pre>
+
+  <p>
+    For React and Next.js, import from <code>whiteout/react</code> instead and
+    use the <code>&lt;Snowfall /&gt;</code> component. See the
+    <a href="../README.md">README</a> for that.
+  </p>
+
+  <footer>
+    <span>whiteout · MIT · 1dev-hridoy</span>
+    <span><a href="../README.md">readme</a> · <a href="./index.html">playground</a></span>
+  </footer>
+
+</div>
+
+<script type="module">
+  import { createSnowfall, PRESETS, SNOW_TYPES, PRESET_LABELS } from '../dist/index.js';
+
+  const live = document.getElementById('live');
+  const label = document.getElementById('live-label');
+  const row = document.getElementById('demo-buttons');
+
+  let current = 'classic';
+  let snow = createSnowfall(live, { ...PRESETS[current], interactive: true, mouseMode: 'trail' });
+
+  const buttons = new Map();
+
+  for (const type of SNOW_TYPES) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = PRESET_LABELS[type];
+    b.setAttribute('aria-pressed', String(type === current));
+    b.addEventListener('click', () => {
+      current = type;
+      // Rebuild rather than retune: presets change count and size ranges
+      // together, and a fresh mount is the honest way to show that.
+      snow.destroy();
+      snow = createSnowfall(live, {
+        ...PRESETS[type],
+        interactive: true,
+        mouseMode: 'trail',
+        count: Math.max(20, Math.round(PRESETS[type].count * 0.5)),
+      });
+      label.textContent = type;
+      for (const [t, btn] of buttons) btn.setAttribute('aria-pressed', String(t === type));
+    });
+    row.appendChild(b);
+    buttons.set(type, b);
+  }
+</script>
+</body>
+</html>
